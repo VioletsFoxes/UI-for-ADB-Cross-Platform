@@ -14,25 +14,24 @@ function App() {
 
   React.useEffect(() => {
     const getCMD = async () => {
-      let output = await new Command("devicesList", ["devices"]).execute();
-      const devicesList = await String(output.stdout).split("\n");
-      let devices = [];
-      // console.warn(devicesList.length);
-      if (devicesList.length > 2) {
-        for (let i = 1; i < devicesList.length; i++) {
-          if (!devicesList[i].endsWith("offline\n")){
-            const item = devicesList[i].split("device")[0].trim();
-            if(item !== "")
-              devices.push(item)
-          }
-            
-        }
-        setDevices(devices);
-      }else{
-        setDevices([])
-        localStorage.setItem("device", JSON.stringify([]))
-      }
-    };
+  let output = await new Command("devicesList", ["devices"]).execute();
+  const devicesList = String(output.stdout).split("\n");
+  let devices = [];
+  if (devicesList.length > 2) {
+    for (let i = 1; i < devicesList.length; i++) {
+      if (!devicesList[i].endsWith("offline\n")){
+        const item = devicesList[i].split("device")[0].trim();
+        if(item !== "")
+          devices.push(item)
+      }        
+    }
+    setDevices(devices);
+  }else{
+    setDevices([])
+    localStorage.setItem("device", JSON.stringify([]))
+  }
+};
+Ï
 
     getCMD();
     setInterval(() => {
